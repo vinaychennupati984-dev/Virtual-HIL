@@ -1,9 +1,14 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "chennupativinaychandra/virtual-hil"
+        TAG = "latest"
+    }
+
     stages {
 
-        stage('Checkout') {
+        stage('Clone Code') {
             steps {
                 git 'https://github.com/vinaychennupati984-dev/Virtual-HIL.git'
             }
@@ -11,29 +16,42 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'
+                bat 'pip install -r requirements.txt'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'pytest --maxfail=1 --disable-warnings -v'
+                bat 'pytest'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t virtual-hil .'
+                bat 'docker build -t %IMAGE_NAME%:%TAG% .'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
+                    bat 'docker push %IMAGE_NAME%:%TAG%'
+                }
             }
         }
     }
 
     post {
         success {
-            echo 'Build Successful ✅'
+            echo 'Pipeline completed successfully!'
         }
         failure {
-            echo 'Build Failed ❌'
+            echo 'Pipeline failed. Check logs.'
         }
     }
 }

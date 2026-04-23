@@ -4,7 +4,7 @@ from can_layer.can_listener import CANListener
 import time
 
 def run_api():
-    app.run(port=5000)
+    app.run(host="0.0.0.0", port=5000)
 
 def run_can():
     listener = CANListener(ecu2)

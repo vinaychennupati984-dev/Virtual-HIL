@@ -92,6 +92,11 @@ docker build -t virtual-hil .
 
 docker run -p 5000:5000 virtual-hil
 
+## Run using Docker
+
+docker pull chennupativinaychandra/virtual-hil:latest
+docker run -p 5000:5000 chennupativinaychandra/virtual-hil:latest
+
 
 ---
 
