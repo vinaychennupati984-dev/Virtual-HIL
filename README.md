@@ -1,136 +1,180 @@
-# 🚗 Virtual HIL Multi-ECU Simulation (Python)
+# 🚗 Virtual HIL Simulation with CI/CD (Python + Docker + Jenkins)
 
 ## 📌 Overview
-This project simulates a **Virtual Hardware-in-the-Loop (HIL)** environment with multiple ECUs communicating over CAN.
 
-- ECU1 sends vehicle speed via CAN
-- ECU2 receives and processes the signal
-- ECU2 applies logic (brake if speed > 80 km/h)
-- REST API used to control ECU1
-- DBC used for signal encoding/decoding
+This project implements a **Virtual Hardware-in-the-Loop (HIL) simulation** using Python.
+It simulates communication between two ECUs over a virtual CAN bus and exposes APIs for interaction.
 
----
+The system is fully automated with:
 
-## 🏗️ Architecture
-
-API → ECU1 → CAN → ECU2 → Logic (Brake)
+* ✅ Automated testing (Pytest)
+* ✅ Containerization (Docker)
+* ✅ CI/CD pipeline (Jenkins)
+* ✅ Image publishing (Docker Hub)
 
 ---
 
-## ⚙️ Tech Stack
+## 🧠 Architecture
 
-- Python 3
-- Flask (REST API)
-- python-can (CAN simulation)
-- cantools (DBC parsing)
-- pytest (testing)
-- Docker (containerization)
-- Jenkins (CI/CD)
+Client → Flask API → ECU1 → CAN → ECU2
+
+* **ECU1**: Receives speed via API and sends CAN message
+* **ECU2**: Receives CAN message and updates state
+* **CAN Layer**: Simulates communication between ECUs
+* **API Layer**: Allows external interaction
 
 ---
 
-## 📁 Project Structure
+## ⚙️ Features
+
+* 🚗 Virtual ECU communication over CAN
+* 🌐 REST API using Flask
+* 🧪 Automated tests using Pytest
+* 🐳 Dockerized application
+* 🔄 CI/CD pipeline using Jenkins
+* ☁️ Docker Hub integration
+
+---
+
+## 📂 Project Structure
+
+```
 virtual_hil/
+│
 ├── app/
+│   ├── api.py
+│   ├── ecu1_service.py
+│   ├── ecu2_service.py
+│
 ├── can_layer/
-├── dbc/
+│   ├── can_interface.py
+│   ├── can_listener.py
+│
 ├── tests/
-├── system_runner.py
-├── client.py
-├── requirements.txt
+│   ├── test_final.py
+│   ├── test_system.py
+│
 ├── Dockerfile
 ├── Jenkinsfile
-
+├── requirements.txt
+├── system_runner.py
+├── client.py
+└── README.md
+```
 
 ---
 
-## 🚀 How to Run
+## 🚀 Running Locally
 
-### 1. Install dependencies
+### 1️⃣ Install dependencies
 
+```
 pip install -r requirements.txt
+```
 
+### 2️⃣ Run application
 
-### 2. Start system
-
+```
 python system_runner.py
+```
 
+### 3️⃣ Test API
 
----
-
-## 🧪 Run Client (Trigger System)
-
+```
 python client.py
-
-
----
-
-## 🔍 Check ECU2 Output
-
-Expected:
-{
-"speed": 90,
-"brake": true
-}
-
+```
 
 ---
 
 ## 🧪 Run Tests
-pytest -v
 
+```
+pytest
+```
 
 ---
 
-## 🐳 Run with Docker
+## 🐳 Docker Usage
 
-### Build:
+### Build image
+
+```
 docker build -t virtual-hil .
+```
 
+### Run container
 
-### Run:
-
+```
 docker run -p 5000:5000 virtual-hil
+```
 
-## Run using Docker
+---
 
+## 📦 Run from Docker Hub
+
+```
 docker pull chennupativinaychandra/virtual-hil:latest
 docker run -p 5000:5000 chennupativinaychandra/virtual-hil:latest
-
-
----
-
-## 🔁 CI/CD (Jenkins)
-
-- Runs pytest on every commit
-- Fails build if tests fail
+```
 
 ---
 
-## 🎯 Key Features
+## 🔄 CI/CD Pipeline (Jenkins)
 
-- Multi-ECU communication simulation
-- CAN message encoding/decoding via DBC
-- Real-time signal processing
-- Automated validation with pytest
-- CI/CD ready pipeline
+Pipeline stages:
 
----
-
-## 💬 Interview Summary
-
-> Built a multi-ECU Virtual HIL system using Python where ECUs communicate over CAN using DBC signals, with API control, automated testing, and CI/CD integration.
+1. Clone code from GitHub
+2. Install dependencies
+3. Run Pytest
+4. Build Docker image
+5. Push image to Docker Hub
 
 ---
 
-## 📌 Future Enhancements
+## 🔁 Pipeline Flow
 
-- UDS diagnostics (Read/Write DTC)
-- Real CAN hardware (SocketCAN)
-- Live dashboard visualization
-- Fault injection scenarios
+```
+GitHub → Jenkins → Pytest → Docker Build → Docker Hub
+```
 
 ---
 
-## 👨‍💻 Author
-Vinay Chandra
+## ⚡ Trigger
+
+* Pipeline triggered manually or via GitHub webhook
+
+---
+
+## 🧠 Key Learnings
+
+* Difference between **embedded build vs container build**
+* Running Flask inside Docker (`0.0.0.0` binding)
+* Docker image lifecycle (build → tag → push → pull)
+* CI/CD automation using Jenkins
+* Secure credential handling in Jenkins
+
+---
+
+## 📈 Improvements
+
+* Docker layer caching optimization
+* Automated testing before image build
+* Reusable container deployment
+* Scalable CI/CD pipeline
+
+---
+
+## 💬 Interview Highlights
+
+* Built end-to-end HIL simulation system
+* Integrated CAN + API communication
+* Automated testing and deployment pipeline
+* Containerized application for portability
+
+---
+
+## 🏁 Conclusion
+
+This project demonstrates a **complete backend + embedded-style simulation system** with modern DevOps practices.
+
+---
