@@ -87,6 +87,7 @@ virtual_hil/
 
 ```bash
 pip install -r requirements.txt
+
 2️⃣ Run application
 python system_runner.py
 
@@ -95,10 +96,13 @@ This will start:
 REST API
 CAN simulation
 TCP Socket server 
+
 3️⃣ Test API
 python client.py
+
 4️⃣ Test Socket Communication 
 python -m socket_layer.socket_client
+
 🔌 TCP Socket Interface 
 
 This interface simulates Ethernet-based ECU communication.
@@ -114,6 +118,7 @@ ECU1:SET_SPEED:60 -> ACK:ECU1:SPEED_SET:60
 ECU1:GET_STATUS -> {'speed': 60}
 ECU2:PROCESS_SPEED:90 -> ACK:ECU2:SPEED_PROCESSED:90
 ECU2:GET_STATUS -> {'speed': 90, 'brake': True}
+
 🧪 Run Tests
 pytest
 🧪 Socket Test Cases 
@@ -121,6 +126,7 @@ Validate ECU1 speed update via socket
 Validate ECU1 status retrieval
 Validate ECU2 processing logic
 Validate invalid command handling
+
 🐳 Docker Usage
 Build image
 docker build -t virtual-hil .
@@ -151,18 +157,21 @@ Docker image lifecycle (build → tag → push → pull)
 CI/CD automation using Jenkins
 Secure credential handling in Jenkins
 Multi-interface communication (CAN + REST + Socket)
+
 📈 Improvements
 Docker layer caching optimization
 Automated testing before image build
 Reusable container deployment
 Scalable CI/CD pipeline
 Extend socket layer to DoIP / SOME-IP
+
 💬 Interview Highlights
 Built end-to-end Virtual HIL simulation system
 Integrated CAN + REST API + TCP Socket communication
 Developed Pytest-based automation for validation
 Implemented CI/CD pipeline using Jenkins
 Containerized application using Docker
+
 🏁 Conclusion
 
 This project demonstrates a complete automotive-style simulation system combining:
