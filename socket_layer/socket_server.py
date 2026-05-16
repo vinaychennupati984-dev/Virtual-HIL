@@ -49,6 +49,9 @@ class SocketServer:
     def handle_client(self, connection, address):
         print(f"[SOCKET] Client connected: {address}")
 
+        # Added timeout handling
+        connection.settimeout(5)
+
         try:
             while True:
                 data = connection.recv(1024)
@@ -61,6 +64,12 @@ class SocketServer:
 
                 response = self.process_command(command)
                 connection.sendall(response.encode("utf-8"))
+
+        except socket.timeout:
+             print(f"[SOCKET] Connection timeout: {address}")
+
+        except Exception as error:
+             print(f"[SOCKET] Error: {error}")
 
         finally:
             connection.close()

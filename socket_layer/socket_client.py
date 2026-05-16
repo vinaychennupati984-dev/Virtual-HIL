@@ -1,4 +1,5 @@
 import socket
+import time
 
 
 HOST = "127.0.0.1"
@@ -6,14 +7,34 @@ PORT = 5001
 
 
 def send_command(command: str) -> str:
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect((HOST, PORT))
+    
+    retries = 3
 
-    client.sendall(command.encode("utf-8"))
-    response = client.recv(1024).decode("utf-8")
+    for attempt in range(retries):
 
-    client.close()
-    return response
+        try:
+            client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+            # client timeout
+            client.settimeout(5)
+
+            client.connect((HOST, PORT))
+
+            client.sendall(command.encode("utf-8"))
+
+            response = client.recv(1024).decode("utf-8")
+
+            client.close()
+
+            return response
+
+        except (socket.timeout, ConnectionRefusedError) as error:
+
+            print(f"[CLIENT] Retry {attempt + 1}/{retries} due to: {error}")
+
+            time.sleep(1)
+
+    return "ERROR:SERVER_UNAVAILABLE"
 
 
 if __name__ == "__main__":
